@@ -8,3 +8,19 @@ services:
     volumes: 
       - .:/code/
     command: "python /code/manage.py runserver 0.0.0.0:8000"
+    depends_on: 
+      - db
+    environment: 
+      - DEBUG=True
+      - DJANGO_SECRET_KEY='fdiaofjmqpiowejfmv9epiaejrfmureikghj'
+      - DATABASE_URL=psql://postgres:postgres@db:5432
+  db:
+    image: postgres:13.4-buster
+    restart: on-failure
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+volumes: 
+  postgres_data:
